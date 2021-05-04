@@ -4,16 +4,16 @@ import {
   makeStyles,
   TextField,
   Button,
-  DialogTitle,
-  DialogContent,
-  Dialog,
+  GridList,
+  GridListTileBar,
+  GridListTile,
+  Drawer,
 } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
 
 export const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [nominations, setNominations] = useState([]);
-  const [showNominations, setShowNominations] = useState(false);
+  const [showDrawer, setShowDrawer] = useState(false);
 
   const fetchResults = async (e) => {
     if (e.keyCode === 13) {
@@ -21,81 +21,116 @@ export const App = () => {
         `http://www.omdbapi.com/?apikey=b6c68bdb&s=${e.target.value}&type=movie`
       );
       setSearchResults(result.data.Search);
+      console.log("search", searchResults);
     }
   };
 
-  const columns = [
-    { field: "Title", headerName: "Movie Title", flex: 1 },
-    {
-      field: "Year",
-      headerName: "Year Released",
-      flex: 0.5,
-    },
-    {
-      field: "Nominated",
-      sortable: false,
-      flex: 0.5,
-      filterable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        const addNomination = () => {
-          const { id, Title, Year } = params.row;
-          setNominations([...nominations, createRowData(id, Title, Year)]);
-        };
-        return (
-          <Button color="primary" variant="contained" onClick={addNomination}>
-            No
-          </Button>
-        );
-      },
-    },
-  ];
+  const nominationList = nominations.map((nomination) => nomination.id);
 
-  console.log("nominations", nominations);
-  const createRowData = (id, title, year) => {
-    return { id: id, Title: title, Year: year };
+  const createRowData = (id, title, year, poster) => {
+    return { id, title, year, poster };
   };
 
   const rowData = [];
   searchResults?.forEach((searchResult) => {
     rowData.push(
-      createRowData(searchResult.imdbID, searchResult.Title, searchResult.Year)
+      createRowData(
+        searchResult.imdbID,
+        searchResult.Title,
+        searchResult.Year,
+        searchResult.Poster
+      )
     );
   });
 
+  const addNomination = (id, title, year, poster) => {
+    setNominations([...nominations, createRowData(id, title, year, poster)]);
+    console.log("nominations", nominations);
+  };
+
+  const removeNomination = (id) => {
+    const updatedNominationList = nominations.filter(
+      (nomination) => nomination.id !== id
+    );
+    setNominations(updatedNominationList);
+  };
+
+  console.log("rowData", rowData);
+
   return (
     <div>
-      <TextField
-        label="Enter a movie title"
-        variant="outlined"
-        onKeyDown={fetchResults}
-      ></TextField>
-      <div style={{ height: 375, width: "100%" }}>
-        <DataGrid
-          rows={rowData}
-          columns={columns}
-          pageSize={5}
-          disableColumnSelector
-          disableSelectionOnClick
-        ></DataGrid>
-      </div>
-      <Button onClick={() => setShowNominations(true)}>View Nominations</Button>
-      <Dialog open={showNominations} onClose={() => setShowNominations(false)}>
-        <DialogTitle>
-          <p>Test</p>
-        </DialogTitle>
-        <DialogContent>
-          <div style={{ height: 375, width: "100%" }}>
-            <DataGrid
-              rows={nominations}
-              columns={columns}
-              pageSize={5}
-              disableColumnSelector
-              disableSelectionOnClick
-            ></DataGrid>
+      <h1>The Shoppies!</h1>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setShowDrawer(true)}
+      >
+        View Nominations
+      </Button>
+      <Drawer variant="persistent" anchor="right" open={showDrawer}>
+        <p>Nominations</p>
+        {nominations.map((nomination) => (
+          <div>
+            <p>
+              {nomination.title} {nomination.year}
+            </p>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => removeNomination(nomination.id)}
+            >
+              Remove
+            </Button>
           </div>
-        </DialogContent>
-      </Dialog>
+        ))}
+      </Drawer>
+      <h2>Movie awards for entrepreneurs</h2>
+      <div style={{ paddingBottom: 20 }}>
+        <TextField
+          label="Enter a movie title"
+          variant="outlined"
+          onKeyDown={fetchResults}
+        ></TextField>
+      </div>
+
+      <GridList cellHeight={300} cols={5} spacing={10}>
+        {rowData.map((nomination) => (
+          <GridListTile key={nomination.id}>
+            <img src={nomination.poster}></img>
+            <GridListTileBar
+              title={nomination.title}
+              subtitle={nomination.year}
+              actionIcon={
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    target="_blank"
+                    href={`https://www.imdb.com/title/${nomination.id}/`}
+                  >
+                    IMDB
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      addNomination(
+                        nomination.id,
+                        nomination.title,
+                        nomination.year,
+                        nomination.poster
+                      )
+                    }
+                    disabled={nominationList.includes(nomination.id)}
+                  >
+                    Nominate
+                  </Button>
+                </div>
+              }
+            ></GridListTileBar>
+          </GridListTile>
+        ))}
+      </GridList>
     </div>
   );
 };
