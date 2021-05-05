@@ -4,16 +4,55 @@ import {
   makeStyles,
   TextField,
   Button,
-  GridList,
-  GridListTileBar,
-  GridListTile,
-  Drawer,
+  InputAdornment,
 } from "@material-ui/core";
+import { MovieGrid } from "./Components/MovieGrid";
+import { NominationDrawer } from "./Components/NominationDrawer";
+import { SearchIcon } from "./Icons/SearchIcon";
+
+const appStyles = makeStyles({
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    fontFamily: "helvetica",
+    color: "#004c3f",
+  },
+  button: {
+    padding: "16px",
+    backgroundColor: "#008060",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#004c3f",
+    },
+  },
+  searchField: {
+    color: "#004c3f",
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#008060",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#004c3f",
+    },
+  },
+  searchFieldLabel: {
+    color: "#008060",
+    "&.Mui-focused": {
+      color: "#004c3f",
+    },
+  },
+  searchFieldContainer: {
+    display: "flex",
+    justifyContent: "center",
+    paddingBottom: "20px",
+  },
+});
 
 export const App = () => {
+  const classes = appStyles({});
   const [searchResults, setSearchResults] = useState([]);
+  const [showNominationDrawer, setShowNominationDrawer] = useState(false);
   const [nominations, setNominations] = useState([]);
-  const [showDrawer, setShowDrawer] = useState(false);
 
   const fetchResults = async (e) => {
     if (e.keyCode === 13) {
@@ -21,116 +60,63 @@ export const App = () => {
         `http://www.omdbapi.com/?apikey=b6c68bdb&s=${e.target.value}&type=movie`
       );
       setSearchResults(result.data.Search);
-      console.log("search", searchResults);
+      console.log("result", result);
+      console.log("Search", searchResults);
     }
   };
 
-  const nominationList = nominations.map((nomination) => nomination.id);
-
-  const createRowData = (id, title, year, poster) => {
-    return { id, title, year, poster };
+  const handleNominations = (newNominations) => {
+    setNominations(newNominations);
   };
 
-  const rowData = [];
-  searchResults?.forEach((searchResult) => {
-    rowData.push(
-      createRowData(
-        searchResult.imdbID,
-        searchResult.Title,
-        searchResult.Year,
-        searchResult.Poster
-      )
-    );
-  });
-
-  const addNomination = (id, title, year, poster) => {
-    setNominations([...nominations, createRowData(id, title, year, poster)]);
-    console.log("nominations", nominations);
+  const handleShowNominationDrawer = (showDrawer) => {
+    setShowNominationDrawer(showDrawer);
   };
 
-  const removeNomination = (id) => {
-    const updatedNominationList = nominations.filter(
-      (nomination) => nomination.id !== id
-    );
-    setNominations(updatedNominationList);
-  };
-
-  console.log("rowData", rowData);
-
+  const nominationIdList = nominations.map((nomination) => nomination.id);
   return (
     <div>
-      <h1>The Shoppies!</h1>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setShowDrawer(true)}
-      >
-        View Nominations
-      </Button>
-      <Drawer variant="persistent" anchor="right" open={showDrawer}>
-        <p>Nominations</p>
-        {nominations.map((nomination) => (
-          <div>
-            <p>
-              {nomination.title} {nomination.year}
-            </p>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => removeNomination(nomination.id)}
-            >
-              Remove
-            </Button>
-          </div>
-        ))}
-      </Drawer>
-      <h2>Movie awards for entrepreneurs</h2>
-      <div style={{ paddingBottom: 20 }}>
+      <div className={classes.header}>
+        <h1>The Shoppies: Movie Awards for Entrepreneurs</h1>
+        <Button
+          className={classes.button}
+          onClick={() => setShowNominationDrawer(true)}
+        >
+          View Nominations
+        </Button>
+      </div>
+      <NominationDrawer
+        showNominationDrawer={showNominationDrawer}
+        handleShowNominationDrawer={handleShowNominationDrawer}
+        handleNominations={handleNominations}
+        nominations={nominations}
+      />
+
+      <div className={classes.searchFieldContainer}>
         <TextField
-          label="Enter a movie title"
+          className={classes.searchField}
+          label="Search for a movie"
           variant="outlined"
           onKeyDown={fetchResults}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon></SearchIcon>
+              </InputAdornment>
+            ),
+            className: classes.searchField,
+          }}
+          InputLabelProps={{
+            className: classes.searchFieldLabel,
+          }}
         ></TextField>
       </div>
-
-      <GridList cellHeight={300} cols={5} spacing={10}>
-        {rowData.map((nomination) => (
-          <GridListTile key={nomination.id}>
-            <img src={nomination.poster}></img>
-            <GridListTileBar
-              title={nomination.title}
-              subtitle={nomination.year}
-              actionIcon={
-                <div>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    target="_blank"
-                    href={`https://www.imdb.com/title/${nomination.id}/`}
-                  >
-                    IMDB
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() =>
-                      addNomination(
-                        nomination.id,
-                        nomination.title,
-                        nomination.year,
-                        nomination.poster
-                      )
-                    }
-                    disabled={nominationList.includes(nomination.id)}
-                  >
-                    Nominate
-                  </Button>
-                </div>
-              }
-            ></GridListTileBar>
-          </GridListTile>
-        ))}
-      </GridList>
+      <MovieGrid
+        searchResults={searchResults}
+        handleNominations={handleNominations}
+        nominations={nominations}
+        nominationIdList={nominationIdList}
+      ></MovieGrid>
     </div>
   );
 };
