@@ -1,16 +1,28 @@
 import React from "react";
+import { Drawer, IconButton, makeStyles } from "@material-ui/core";
+import { ArrowIcon } from "../Icons/ArrowIcon";
+import { DeleteIcon } from "../Icons/DeleteIcon";
 
-import { Button, Drawer, IconButton, makeStyles } from "@material-ui/core";
-import { CloseIcon } from "../Icons/CloseIcon";
 const nominationDrawerStyles = makeStyles({
-  header: { display: "flex" },
-  button: {
-    padding: "6px",
-    backgroundColor: "#008060",
-    color: "white",
-    "&:hover": {
-      backgroundColor: "#004c3f",
-    },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    color: "#004c3f",
+    fontFamily: "helvetica",
+    fontSize: "24pt",
+  },
+  drawerPaper: {
+    width: "20%",
+    backgroundColor: "#fbf7ed",
+  },
+  nomination: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: "#004c3f",
+    fontFamily: "helvetica",
+    marginLeft: "5px",
+    fontSize: "16pt",
   },
 });
 
@@ -21,6 +33,7 @@ export const NominationDrawer = ({
   nominations,
 }) => {
   const classes = nominationDrawerStyles({});
+
   const removeNomination = (id) => {
     const updatedNominationList = nominations.filter(
       (nomination) => nomination.id !== id
@@ -29,29 +42,33 @@ export const NominationDrawer = ({
   };
 
   return (
-    <Drawer variant="persistent" anchor="right" open={showNominationDrawer}>
+    <Drawer
+      anchor="right"
+      open={showNominationDrawer}
+      onClose={() => handleShowNominationDrawer(false)}
+      classes={{ paper: classes.drawerPaper }}
+    >
       <div className={classes.header}>
-        <p>Your Nominations</p>
         <IconButton
           size="medium"
           aria-label="Close Nomination Drawer"
           onClick={() => handleShowNominationDrawer(false)}
         >
-          <CloseIcon />
+          <ArrowIcon />
         </IconButton>
+        <p>Your Nominations</p>
       </div>
       {nominations.map((nomination) => (
-        <div key={nomination.id}>
+        <div classkey={nomination.id} className={classes.nomination}>
           <p>
-            {nomination.title} {nomination.year}
+            {nomination.title} ({nomination.year})
           </p>
-          <Button
-            variant="contained"
-            color="primary"
+          <IconButton
+            aria-label="Remove Nomination"
             onClick={() => removeNomination(nomination.id)}
           >
-            Remove
-          </Button>
+            <DeleteIcon />
+          </IconButton>
         </div>
       ))}
     </Drawer>

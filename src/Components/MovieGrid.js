@@ -37,16 +37,20 @@ export const MovieGrid = ({
     handleNominations([...nominations, { id, title, year, poster }]);
   };
 
+  const uniqueSearchResults = [
+    ...new Map(searchResults?.map((movie) => [movie.imdbID, movie])).values(),
+  ];
+
   const moviesData = [];
-  searchResults?.forEach((searchResult) => {
+
+  uniqueSearchResults?.forEach((searchResult) => {
     const { imdbID, Title, Year, Poster } = searchResult;
     moviesData.push({ id: imdbID, title: Title, year: Year, poster: Poster });
   });
 
-  const final = [...new Set(moviesData)];
   return (
     <GridList cellHeight={300} cols={5} spacing={10}>
-      {final.map((movie) => (
+      {moviesData.map((movie) => (
         <GridListTile key={movie.id}>
           <img
             src={
@@ -54,8 +58,8 @@ export const MovieGrid = ({
                 ? movie.poster
                 : "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
             }
-            alt=""
-          ></img>
+            alt={movie.title}
+          />
           <GridListTileBar
             className={classes.gridListTileBar}
             title={movie.title}
@@ -80,7 +84,7 @@ export const MovieGrid = ({
                     )
                   }
                   disabled={
-                    (nominationIdList.includes(movie.id) === true) |
+                    nominationIdList.includes(movie.id) |
                     (nominationIdList.length === 5)
                   }
                 >
