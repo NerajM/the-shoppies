@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+# The Shoppies
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was made as part of the [Shopify Fall 2021 Front End Developer internship Challenge](https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit?usp=sharing)
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+1. [Introduction](#Introduction)
+2. [Technologies](#Technologies)
+3. [Setup](#Setup)
+4. [Design Decisions](#Design_Decisions)
+5. [Testing](#Testing)
+6. [Authors](#Authors)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Introduction
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This website functions to search for movies based on title by typing into the text field and hitting the `Enter` key. The matching movies are retrieved by using the `OMDB API`, and the top 10 results are displayed. The view contains a poster of each movie (if available), a link to the movie's IMDB page, and a button allowing users to nominate the movie for a Shoppie Award. The user can nominate up to 5 movies, and the nominations can be viewed by hitting the `View Nominations` button. The nominations can also be removed from users nominations by clicking the `Delete` button (trash bin icon) next to the corresponding nomination.
 
-### `npm test`
+## Technologies
+This project was created with:
+* [React](https://reactjs.org/)
+* [Material-UI](https://material-ui.com/)
+* [OMDB API](https://www.omdbapi.com/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Deployment
+The project is hosted via Github Pages at https://nerajm.github.io/the-shoppies/
 
-### `npm run build`
+[This guide](https://create-react-app.dev/docs/deployment/#github-pages-https-pagesgithubcom) was followed to learn how to deploy and host the project.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Setup
+To Run the project, you must:
+* Install `Node.js` version >=10.18
+* Clone the github repo: https://github.com/NerajM/the-shoppies.git
+* Enter the repo using `cd PATH/the-shoppies`
+* Install node modules using `npm install`
+* Start the app using `npm start`
+* Navigate to `http://localhost:PORT` on your browser
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Design Decisions:
+This project was made with the technical requirements as stated in the [Shopify Fall 2021 Front End Developer Challenge](https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit?usp=sharing). `Material-UI` was chosen due to simplicity of styling and thorough documentation. The colour scheme is based on the Shopify website to best represent Shopify. The movie posters gathered through the `OMDB API` allowed me to display an image for any movie that has one, leading me to implement the display in a grid rather than a list. The drawer was placed on the right to adhere to popular design standards and maintain solid flow with the viewing button being placed on the right. The banner was chosen to remain white with black text to make sure it stands out to the user. The drawer has a sliding animation when opening/closing, and the banner fades in/out when opening/closing. The remainder of the screen is darkened upon the display of both the banner and the drawer to emphasize them.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Testing
+I came up with these test cases prior to development, and proceeded to test them throughout:
+* Searching an empty string :heavy_check_mark:
+* Searching a movie with no results :heavy_check_mark:
+* Searching a title (ex. Frog :frog:) with duplicate results (helped me catch a :bug:!) :heavy_check_mark:
+* Searching for a movie with a result having a long title :heavy_check_mark:
+* Removing nominations :heavy_check_mark:
+* Adding nominations :heavy_check_mark: 
+* Disabling the button for a movie when it was nominated :heavy_check_mark:
+* Disabling all nomination buttons when 5 nominations were reached :heavy_check_mark:
+* Ensuring no more than 5 nominations could be added :heavy_check_mark:
+* Ensuring nomination button stays disabled after multiple searches :heavy_check_mark:
+* Resizing screen :heavy_check_mark:
+* Opening drawer :heavy_check_mark:
+* Closing drawer with button :heavy_check_mark:
+* Closing drawer by clicking outside the drawer :heavy_check_mark:
+* Displaying a movie with a long title in the drawer :heavy_check_mark:
+* Removing a movie from the drawer and ensuring its nomination button is re-enabled :heavy_check_mark:
+* Display banner when 5 nominations are reached :heavy_check_mark:
+* Banner displays again if a nomination is removed then added to reach 5 again :heavy_check_mark:
+* Close banner when close button is clicked :heavy_check_mark:
+* Close banner and open drawer when view nominations is clicked from the banner :heavy_check_mark:
+* Close banner when clicking outside of the banner :heavy_check_mark:
+* Banner doesn't reopen once banner is closed and drawer is closed, and ensuring buttons stay disabled :heavy_check_mark:
+* Testing IMDB link for multiple movies :heavy_check_mark:
+* Having a fallback if poster is not available :heavy_check_mark:
 
-### `npm run eject`
+## Authors
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[Neraj Manamperi](https://github.com/NerajM) (2021) 
