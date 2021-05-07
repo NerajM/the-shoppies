@@ -81,7 +81,7 @@ export const App = () => {
   const fetchResults = async (e) => {
     if (e.keyCode === 13) {
       const result = await axios.get(
-        `http://www.omdbapi.com/?apikey=b6c68bdb&s=${e.target.value}&type=movie`
+        `https://www.omdbapi.com/?apikey=b6c68bdb&s=${e.target.value}&type=movie`
       );
       setSearchResults(result.data.Search);
     }
