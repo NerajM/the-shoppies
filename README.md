@@ -1,6 +1,6 @@
 # The Shoppies
 
-This project was made as part of the [Shopify Fall 2021 Front End Developer internship Challenge](#https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit#)
+This project was made as part of the [Shopify Fall 2021 Front End Developer internship Challenge](https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit?usp=sharing)
 
 ## Table of Contents
 
@@ -18,9 +18,9 @@ This website functions to search for movies based on title by typing into the te
 
 ## Technologies
 This project was created with:
-* [React](#https://reactjs.org/)
-* [Material-UI](#https://material-ui.com/)
-* [OMDB API](#https://www.omdbapi.com/)
+* [React](https://reactjs.org/)
+* [Material-UI](https://material-ui.com/)
+* [OMDB API](https://www.omdbapi.com/)
 
 ## Setup
 To Run the project, you must:
@@ -32,7 +32,7 @@ To Run the project, you must:
 * Navigate to `http://localhost:PORT` on your browser
 
 ## Design Decisions:
-This project was made with the technical requirements as stated in the [Shopify Fall 2021 Front End Developer Challenge](#https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit#). `Material-UI` was chosen due to simplicity of styling and thorough documentation. The colour scheme is based on the Shopify website to best represent Shopify. The movie posters gathered through the `OMDB API` allowed me to display an image for any movie that has one, leading me to implement the display in a grid rather than a list. The drawer was placed on the right to adhere to popular design standards and maintain solid flow with the viewing button being placed on the right. The banner was chosen to remain white with black text to make sure it stands out to the user. The drawer has a sliding animation when opening/closing, and the banner fades in/out when opening/closing. The remainder of the screen is darkened upon the display of both the banner and the drawer to emphasize them.
+This project was made with the technical requirements as stated in the [Shopify Fall 2021 Front End Developer Challenge](https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit?usp=sharing). `Material-UI` was chosen due to simplicity of styling and thorough documentation. The colour scheme is based on the Shopify website to best represent Shopify. The movie posters gathered through the `OMDB API` allowed me to display an image for any movie that has one, leading me to implement the display in a grid rather than a list. The drawer was placed on the right to adhere to popular design standards and maintain solid flow with the viewing button being placed on the right. The banner was chosen to remain white with black text to make sure it stands out to the user. The drawer has a sliding animation when opening/closing, and the banner fades in/out when opening/closing. The remainder of the screen is darkened upon the display of both the banner and the drawer to emphasize them.
 
 ## Testing
 I came up with these test cases prior to development, and proceeded to test them throughout:
