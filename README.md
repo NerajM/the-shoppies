@@ -22,6 +22,11 @@ This project was created with:
 * [Material-UI](https://material-ui.com/)
 * [OMDB API](https://www.omdbapi.com/)
 
+## Deployment
+The project is hosted via Github Pages at https://nerajm.github.io/the-shoppies/
+
+[This guide](https://create-react-app.dev/docs/deployment/#github-pages-https-pagesgithubcom) was followed to learn how to deploy and host the project.
+
 ## Setup
 To Run the project, you must:
 * Install `Node.js` version >=10.18
